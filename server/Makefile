@@ -1,11 +1,21 @@
 CC = gcc
 
 OBJS = main.o
+INCLUDE = -I../common
 
-server: $(OBJS)
-	gcc -o server $(OBJS)
+LDFLAGS := -L../common
+CFLAGS := -Wall \
+		  $(INCLUDE) 
+
+.PHONY: common all run clean
 
 all: server
+
+common: 
+	cd ../common && $(MAKE) libaudiosync.a
+
+server: $(OBJS) common
+	gcc -o server $(OBJS) $(LDFLAGS) -laudiosync
 
 run: all
 	./server
@@ -13,3 +23,4 @@ run: all
 clean:
 	rm -f $(OBJS)
 	rm -f server
+	cd ../common && $(MAKE) clean
