@@ -11,6 +11,7 @@
 
 pthread_t threads[NUM_THREADS];
 bool used_ids[NUM_THREADS];
+uint64_t delays[NUM_THREADS];
 
 void mainloop(
     struct sockaddr_in server_address,

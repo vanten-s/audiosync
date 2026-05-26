@@ -1,4 +1,4 @@
-OBJS = serialize.o fmt.o
+OBJS = serialize.o fmt.o timer.o
 
 NAME = libaudiosync.a
 
