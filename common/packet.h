@@ -12,8 +12,11 @@ enum PacketType {
 struct Packet {
     uint64_t timestamp; // time in us since server started
     enum PacketType packet_type; // time in us since server started
+    uint32_t data_length;
     uint8_t* data;
 };
 
-uint64_t serialize(struct Packet packet, uint8_t* buffer);
+int serialize(struct Packet packet, uint8_t* buffer);
+struct Packet deserialize(uint8_t* buffer, uint8_t* data_buffer);
+uint32_t packet_to_debug_string(struct Packet packet, char* buffer);
 
