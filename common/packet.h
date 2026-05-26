@@ -1,4 +1,8 @@
+#ifndef PACKET_H
+#define PACKET_H
 #include <stdint.h>
+
+#define MAX_PACKET_SIZE 1024
 
 enum PacketType {
     PACKET_TYPE_CONNECTION_REQUEST  = 0,
@@ -19,4 +23,5 @@ struct Packet {
 int serialize(struct Packet packet, uint8_t* buffer);
 struct Packet deserialize(uint8_t* buffer, uint8_t* data_buffer);
 uint32_t packet_to_debug_string(struct Packet packet, char* buffer);
-
+void debug_packet(struct Packet packet);
+#endif

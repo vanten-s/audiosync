@@ -1,7 +1,10 @@
 CC = gcc
 
-OBJS = main.o
-INCLUDE = -I../common
+OBJS = main.o \
+	   mainloop.o
+
+INCLUDE = -I../common \
+		  -Iinclude
 
 LDFLAGS := -L../common
 CFLAGS := -Wall \

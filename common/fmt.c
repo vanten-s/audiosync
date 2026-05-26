@@ -14,3 +14,7 @@ char* packet_types[] = {
 uint32_t packet_to_debug_string(struct Packet packet, char* buffer) {
     return sprintf(buffer, "Timestamp: %016lx\nType: %s\nData Length: %08x\n", packet.timestamp, packet_types[packet.packet_type], packet.data_length);
 }
+
+void debug_packet(struct Packet packet) {
+    printf("Timestamp: %016lx\nType: %s\nData Length: %08x\n", packet.timestamp, packet_types[packet.packet_type], packet.data_length);
+}
