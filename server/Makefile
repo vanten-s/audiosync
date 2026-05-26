@@ -1,7 +1,9 @@
 CC = gcc
 
 OBJS = main.o \
-	   mainloop.o
+	   mainloop.o \
+	   client_handler.o \
+	   sources/random.o
 
 INCLUDE = -I../common \
 		  -Iinclude

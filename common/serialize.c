@@ -54,8 +54,6 @@ struct Packet deserialize(uint8_t* serialized, uint8_t* data_buffer) {
         cursor++;
     }
 
-    printf("%x\n", data_length);
-
     for (int i = 0; i < data_length; i++) {
         data_buffer[i] = serialized[cursor];
         cursor++; 
