@@ -7,6 +7,7 @@
 #include <packet.h>
 #include <timer.h>
 #include <client_handler.h>
+#include <mainloop.h>
 
 int initial_connection(struct Client* client) {
     int fd = client->fd;
@@ -52,11 +53,14 @@ int initial_connection(struct Client* client) {
 
     printf("Client number %d has %ld ticks delay and connected on tick %ld\n", client_id, time_delay, time_sent);
     
+    pthread_mutex_unlock(&thread_socket[client_id]);
+
     return 0;
 }
 
 void free_client(struct Client* client) {
     close(client->fd);
+    free(client);
 }
 
 void* handle_client(void* c) {
@@ -67,6 +71,10 @@ void* handle_client(void* c) {
     if (initial_connection(client) == -1) {
         free_client(client);
         return NULL;
+    }
+
+    while (1) {
+        sleep(1);
     }
     
     free_client(client);

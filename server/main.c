@@ -4,7 +4,7 @@
 #include "packet.h"
 #include "mainloop.h"
 
-#include "sources/random.h"
+#include "sources/portaudiosource.h"
 
 int main(int argc, char const* argv[]) {
     struct sockaddr_in servaddr;
@@ -14,10 +14,9 @@ int main(int argc, char const* argv[]) {
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY); // Allow any in-address
     servaddr.sin_port = htons(5725); // Port 5725, htons convert it to correct bit order
 
-    struct Source source = random_source();
+    source_portaudio_init();
 
     mainloop(
-        servaddr,
-        source
+        servaddr
     );
 }

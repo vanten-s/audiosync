@@ -8,6 +8,8 @@
 #include <packet.h> 
 #include <timer.h> 
 
+#include <audio.h> 
+
 int64_t clock_sync_difference;
 
 void initial_connection(int fd) {
@@ -65,7 +67,29 @@ int main() {
     printf("Connected to the server!\n");
 
     initial_connection(socket_fd);
-    printf("Time sync difference: %ld\n", clock_sync_difference);
+    printf("Server and client synced with time difference: %ld\n", clock_sync_difference);
+
+    uint8_t buffer[2048];
+    uint8_t data_buffer[2048];
+    while (1) {
+        int length = read(socket_fd, buffer, 2048);
+        if (length == 0) {
+            break;
+        } else if (length == -1) {
+            printf("Error in read");
+            break;
+        }
+        struct Packet p = deserialize(buffer, data_buffer);
+
+        switch (p.packet_type) {
+            case PACKET_TYPE_AUDIO_DATA:
+                handle_audio_data(p);
+                break;
+
+            default:
+                printf("Invalid Packet, type: %d\n", p.packet_type);
+        }
+    }
 
     close(socket_fd);
 }

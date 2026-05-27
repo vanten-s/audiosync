@@ -3,12 +3,13 @@ CC = gcc
 OBJS = main.o \
 	   mainloop.o \
 	   client_handler.o \
-	   sources/random.o
+	   sources/random.o \
+	   sources/portaudio.o
 
 INCLUDE = -I../common \
 		  -Iinclude
 
-LDFLAGS := -L../common
+LDFLAGS := -L../common -lportaudio
 CFLAGS := -Wall \
 		  $(INCLUDE) 
 

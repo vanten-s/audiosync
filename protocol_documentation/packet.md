@@ -24,7 +24,6 @@ Type is a uint8_t representing the type of packet being sent.
 | Client | 2               | Syncing Response    |
 | Server | 3               | Corrected Timestamp |
 | Server | 4               | Audio Data          |
-| Client | 5               | Audio Data ACK      |
 
 ### Connection Request
 When a client wants to connect to the server, it sends a Connection Request packet. The timestamp of this message should be NULL, and the data will be a TODO! formatted string containing TODO!
@@ -41,7 +40,3 @@ The server measures the time between sending the connection response and syncing
 
 ### Audio Data
 TODO!
-
-### Audio Data ACK
-TODO!
-
