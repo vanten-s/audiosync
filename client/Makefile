@@ -12,12 +12,18 @@ LDFLAGS := -L../common \
 CFLAGS := -Wall \
 		  $(INCLUDE) 
 
-.PHONY: common all run clean
+LIBFLAGS :=
+
+.PHONY: common all run clean debug
+
+debug: LIBFLAGS += debug
+debug: CFLAGS += -g
+debug: all
 
 all: server
 
 common: 
-	cd ../common && $(MAKE) libaudiosync.a
+	cd ../common && $(MAKE) $(LIBFLAGS)
 
 server: $(OBJS) common
 	gcc -o client $(OBJS) $(LDFLAGS) -laudiosync
