@@ -17,7 +17,7 @@ int initial_connection(struct Client* client) {
     uint8_t data[MAX_PACKET_SIZE];
     int length = read(fd, buffer, MAX_PACKET_SIZE);
     
-    struct Packet p = deserialize(buffer, data);
+    struct Packet p = deserialize(buffer, data, MAX_PACKET_SIZE, MAX_PACKET_SIZE);
     if (p.packet_type != PACKET_TYPE_CONNECTION_REQUEST) {
         printf("Invalid packet received from %d\n", client_id);
         return -1;
@@ -37,7 +37,7 @@ int initial_connection(struct Client* client) {
 
     uint64_t time_delay = (time_received - time_sent) >> 1;
 
-    p = deserialize(buffer, data);
+    p = deserialize(buffer, data, MAX_PACKET_SIZE, MAX_PACKET_SIZE);
     if (p.packet_type != PACKET_TYPE_SYNCING_RESPONSE) {
         printf("Invalid packet received from %d\n", client_id);
         return -1;
