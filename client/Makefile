@@ -1,11 +1,14 @@
 CC = gcc
 
-OBJS = main.o
+OBJS = main.o \
+	   audio.o
 
 INCLUDE = -I../common \
 		  -Iinclude
 
-LDFLAGS := -L../common
+LDFLAGS := -L../common \
+		   -lportaudio
+
 CFLAGS := -Wall \
 		  $(INCLUDE) 
 

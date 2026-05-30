@@ -9,7 +9,8 @@ OBJS = main.o \
 INCLUDE = -I../common \
 		  -Iinclude
 
-LDFLAGS := -L../common -lportaudio
+LDFLAGS := -L../common \
+		   -lportaudio
 CFLAGS := -Wall \
 		  $(INCLUDE) 
 

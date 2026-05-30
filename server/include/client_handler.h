@@ -4,3 +4,4 @@ struct Client {
 };
 
 void* handle_client(void* client);
+void free_client(struct Client* client);

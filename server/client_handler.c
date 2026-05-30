@@ -60,6 +60,7 @@ int initial_connection(struct Client* client) {
 
 void free_client(struct Client* client) {
     close(client->fd);
+    used_ids[client->client_id] = false;
     free(client);
 }
 
@@ -74,7 +75,22 @@ void* handle_client(void* c) {
     }
 
     while (1) {
-        sleep(1);
+        while (read_pointers[client_id] == write_pointer) { usleep(200); }
+
+        uint8_t byte_buffer[1024];
+
+        int packet_length = serialize(packet_buffer[read_pointers[client_id]], byte_buffer);
+
+        int length_written = write(fd, byte_buffer, packet_length);
+        if (length_written != packet_length) {
+            printf("Writing to client %d failed, aborting\n", client_id);
+            break;
+        }
+
+        read_pointers[client_id]++;
+        if (read_pointers[client_id] == 1024) {
+            read_pointers[client_id] = 0;
+        }
     }
     
     free_client(client);

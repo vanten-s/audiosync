@@ -43,11 +43,9 @@ struct Packet deserialize(uint8_t* serialized, uint8_t* data_buffer) {
         timestamp |= serialized[cursor];
         cursor++;
     }
-    printf("timestamp: %ld\n", timestamp);
 
     enum PacketType packet_type = serialized[cursor];
     cursor++;
-    printf("Packet Type: %d\n", packet_type);
 
     uint32_t data_length;
     for (int i = 0; i < 4; i++) {
@@ -56,7 +54,6 @@ struct Packet deserialize(uint8_t* serialized, uint8_t* data_buffer) {
         cursor++;
     }
 
-    printf("Data Length: %d\n", data_length);
     for (int i = 0; i < data_length; i++) {
         data_buffer[i] = serialized[cursor];
         cursor++; 

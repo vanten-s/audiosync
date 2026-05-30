@@ -26,7 +26,7 @@ void initial_connection(int fd) {
     write(fd, buffer, length);
 
     // Receive connection response
-    length = read(fd, buffer, 256);
+    length = read(fd, buffer, 2048);
 
     p.timestamp = 0;
     p.packet_type = PACKET_TYPE_SYNCING_RESPONSE;
@@ -36,7 +36,7 @@ void initial_connection(int fd) {
     length = serialize(p, buffer);
     write(fd, buffer, length);
 
-    length = read(fd, buffer, 256);
+    length = read(fd, buffer, 2048);
     uint64_t time_sync_received = current_time();
     p = deserialize(buffer, data);
     uint64_t sync_timestamp_received = p.timestamp;
@@ -51,7 +51,9 @@ int main() {
     server_address.sin_family = AF_INET;
     server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
     server_address.sin_port = htons(5725);
-    
+
+    audio_init();
+        
     int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_fd == -1) {
         printf("Socket creation failed\n");
@@ -72,13 +74,14 @@ int main() {
     uint8_t buffer[2048];
     uint8_t data_buffer[2048];
     while (1) {
-        int length = read(socket_fd, buffer, 2048);
+        int length = read(socket_fd, buffer, 525);
         if (length == 0) {
             break;
         } else if (length == -1) {
             printf("Error in read");
             break;
         }
+
         struct Packet p = deserialize(buffer, data_buffer);
 
         switch (p.packet_type) {

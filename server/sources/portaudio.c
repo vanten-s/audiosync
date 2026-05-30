@@ -1,6 +1,7 @@
 #include <portaudio.h>
 #include <mainloop.h>
 #include <stdio.h>
+#include <string.h>
 
 /*
 typedef int PaStreamCallback( const void *input,
@@ -18,6 +19,7 @@ int stream_callback(const void *input, void *output,
                     void *userData) 
 {
     new_audio_data((uint8_t*)input, 2*frameCount);
+    memcpy(output, input, 512);
     return 0;
 }
 
@@ -33,7 +35,7 @@ void source_portaudio_init() {
     /* Open an audio I/O stream. */
     err = Pa_OpenDefaultStream( &stream,
                                 1,          /* mono input */
-                                0,          /* no output channels */
+                                1,          /* no output channels */
                                 paInt16,    /* 16 bit audio */
                                 48000,
                                 256,        /* frames per buffer, i.e. the number
