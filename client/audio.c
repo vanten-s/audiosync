@@ -31,7 +31,7 @@ int stream_callback(const void* input,
                     void *userData ) 
 {
 
-    size_t i = write_pointer - 1;
+    int64_t i = write_pointer - 1;
     if (i == -1) {
         bzero(output, 512);
         return 0;
@@ -40,8 +40,8 @@ int stream_callback(const void* input,
 
     while (timestamp <= buffer_list[i].timestamp && i != write_pointer /* prevents infinite loops */) {
         i--;
-        if (i == 0) {
-            i = BUFFER_LENGTH - 1;
+        if (i < 0) {
+            i += BUFFER_LENGTH - 1;
         }
     }
 
