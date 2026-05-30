@@ -34,7 +34,7 @@ int serialize(struct Packet packet, uint8_t* buffer) {
 }
 
 // Caller needs to free the return value after sending
-struct Packet deserialize(uint8_t* serialized, uint8_t* data_buffer) {
+struct Packet deserialize(uint8_t* serialized, uint8_t* data_buffer, size_t length, uint32_t max_data_length) {
     int cursor = 0;
 
     uint64_t timestamp;
@@ -54,7 +54,16 @@ struct Packet deserialize(uint8_t* serialized, uint8_t* data_buffer) {
         cursor++;
     }
 
+    if (data_length > max_data_length) {
+        printf("data longer than max_data_length\ndata_length: %d\nmax_data_length: %d\n", data_length, max_data_length);
+        data_length = max_data_length;
+    }
+
     for (int i = 0; i < data_length; i++) {
+        if (cursor > length) {
+            printf("Packet larger than buffer size\ndata_length: %d\nbuffer size: %ld\n", cursor, length);
+            break;
+        }
         data_buffer[i] = serialized[cursor];
         cursor++; 
     }

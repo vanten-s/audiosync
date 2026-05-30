@@ -1,6 +1,7 @@
 #ifndef PACKET_H
 #define PACKET_H
 #include <stdint.h>
+#include <stddef.h>
 
 #define MAX_PACKET_SIZE 1024
 
@@ -21,7 +22,7 @@ struct Packet {
 };
 
 int serialize(struct Packet packet, uint8_t* buffer);
-struct Packet deserialize(uint8_t* buffer, uint8_t* data_buffer);
+struct Packet deserialize(uint8_t* serialized, uint8_t* data_buffer, size_t length, uint32_t max_data_length);
 uint32_t packet_to_debug_string(struct Packet packet, char* buffer);
 void debug_packet(struct Packet packet);
 #endif

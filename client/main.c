@@ -38,7 +38,7 @@ void initial_connection(int fd) {
 
     length = read(fd, buffer, 2048);
     uint64_t time_sync_received = current_time();
-    p = deserialize(buffer, data);
+    p = deserialize(buffer, data, 2048, 2048);
     uint64_t sync_timestamp_received = p.timestamp;
 
     clock_sync_difference = sync_timestamp_received - time_sync_received;
@@ -82,7 +82,7 @@ int main() {
             break;
         }
 
-        struct Packet p = deserialize(buffer, data_buffer);
+        struct Packet p = deserialize(buffer, data_buffer, 525, 2048);
 
         switch (p.packet_type) {
             case PACKET_TYPE_AUDIO_DATA:
