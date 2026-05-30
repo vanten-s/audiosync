@@ -44,6 +44,17 @@ void initial_connection(int fd) {
     clock_sync_difference = sync_timestamp_received - time_sync_received;
 }
 
+struct Packet receive_packet(int socket_fd, uint8_t* data_buffer, size_t data_buffer_size) {
+    uint8_t buffer[525];
+    size_t n_bytes_left_to_read = 525;
+
+    while (n_bytes_left_to_read != 0) {
+        n_bytes_left_to_read -= read(socket_fd, buffer+525-n_bytes_left_to_read, n_bytes_left_to_read);
+    }
+    struct Packet p = deserialize(buffer, data_buffer, 525, data_buffer_size);
+    return p;
+}
+
 int main() {
     struct sockaddr_in server_address;
     bzero(&server_address, sizeof(server_address));
@@ -71,19 +82,9 @@ int main() {
     initial_connection(socket_fd);
     printf("Server and client synced with time difference: %ld\n", clock_sync_difference);
 
-    uint8_t buffer[2048];
     uint8_t data_buffer[2048];
     while (1) {
-        int length = read(socket_fd, buffer, 525);
-        if (length == 0) {
-            break;
-        } else if (length == -1) {
-            printf("Error in read");
-            break;
-        }
-
-        struct Packet p = deserialize(buffer, data_buffer, 525, 2048);
-
+        struct Packet p = receive_packet(socket_fd, data_buffer, 2048);
         switch (p.packet_type) {
             case PACKET_TYPE_AUDIO_DATA:
                 handle_audio_data(p);
